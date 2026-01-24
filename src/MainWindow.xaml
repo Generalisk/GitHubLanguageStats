@@ -10,8 +10,8 @@
         <DockPanel>
             <StackPanel x:Name="languageBar" Orientation="Horizontal" Height="20" DockPanel.Dock="Top">
             </StackPanel>
-            <StackPanel x:Name="textPanel" Orientation="Vertical">
-            </StackPanel>
+            <WrapPanel x:Name="languageList" Orientation="Horizontal">
+            </WrapPanel>
         </DockPanel>
     </Grid>
 </Window>

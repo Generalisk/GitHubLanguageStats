@@ -96,7 +96,7 @@ public partial class MainWindow : Window
         var unitSize = ActualWidth / total;
 
         languageBar.Children.Clear();
-        textPanel.Children.Clear();
+        languageList.Children.Clear();
 
         languages = languages.OrderByDescending(x => x.Value).ToList();
 
@@ -134,7 +134,7 @@ public partial class MainWindow : Window
 
             var textStack = new StackPanel();
             textStack.Orientation = Orientation.Horizontal;
-            textPanel.Children.Add(textStack);
+            languageList.Children.Add(textStack);
 
             var circle = new Ellipse();
             circle.Fill = new SolidColorBrush(hexColor == "000000" ? Colors.Transparent : color);
