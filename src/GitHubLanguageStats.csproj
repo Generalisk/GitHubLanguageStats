@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<!--Project Info-->
+	<PropertyGroup>
+		<AssemblyName>GitHubLanguageStats</AssemblyName>
+		<RootNamespace>GitHubLanguageStats</RootNamespace>
+	</PropertyGroup>
+
+	<!--Output Paths-->
+	<PropertyGroup>
+		<OutputPath>$(SolutionDir)\bin\</OutputPath>
+		<!--<IntermediateOutputPath>$(SolutionDir)\obj\</IntermediateOutputPath>-->
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<!--<SelfContained>true</SelfContained>-->
+	</PropertyGroup>
+
+	<!--Debug Properties-->
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+
+	<!--Release Properties-->
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+
+	<!--NuGet Packages-->
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+	</ItemGroup>
+</Project>
