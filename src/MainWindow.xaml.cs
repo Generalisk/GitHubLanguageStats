@@ -26,6 +26,12 @@ public partial class MainWindow : Window
         refresh.Start();
     }
 
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    {
+        base.OnRenderSizeChanged(sizeInfo);
+        UpdateLanguageInfo();
+    }
+
     public async void Refresh()
     {
         var json = await GitHubGetRequest(REQUEST_URL);
