@@ -29,7 +29,8 @@ public partial class MainWindow : Window
     public async void Refresh()
     {
         var json = await GitHubGetRequest(REQUEST_URL);
-        var array = JArray.Parse(json);
+        var obj = JObject.Parse(json);
+        var array = obj.Value<JArray>("items");
 
         languages.Clear();
 
@@ -62,7 +63,7 @@ public partial class MainWindow : Window
         }
     }
 
-    public string REQUEST_URL { get => string.Format("https://api.github.com/users/{0}/repos", AUTHOR); }
+    public string REQUEST_URL { get => string.Format("https://api.github.com/search/repositories?q=user:{0}", AUTHOR); }
 
     private async Task<string> GitHubGetRequest(string url)
     {
