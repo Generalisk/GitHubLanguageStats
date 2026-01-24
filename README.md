@@ -1,4 +1,6 @@
 <div align="center">
+
+  [![Build](https://github.com/Generalisk/GitHubLanguageStats/actions/workflows/build.yml/badge.svg)](https://github.com/Generalisk/GitHubLanguageStats/actions/workflows/build.yml)
   
   # GitHub Language Stats
 
