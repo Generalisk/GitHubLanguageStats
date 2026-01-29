@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -16,6 +17,9 @@ public partial class MainWindow : Window
 {
     private List<KeyValuePair<string, ulong>> languages =
         new List<KeyValuePair<string, ulong>>();
+
+    private List<KeyValuePair<StackPanel, Rectangle>> langItems =
+        new List<KeyValuePair<StackPanel, Rectangle>>();
 
     public MainWindow()
     {
@@ -95,6 +99,7 @@ public partial class MainWindow : Window
 
         var unitSize = ActualWidth / total;
 
+        langItems.Clear();
         languageBar.Children.Clear();
         languageList.Children.Clear();
 
@@ -134,6 +139,7 @@ public partial class MainWindow : Window
 
             var textStack = new StackPanel();
             textStack.Orientation = Orientation.Horizontal;
+            textStack.MouseDown += SelectItem;
             languageList.Children.Add(textStack);
 
             var circle = new Ellipse();
@@ -150,7 +156,23 @@ public partial class MainWindow : Window
             var box = new Rectangle();
             box.Fill = new SolidColorBrush(color);
             box.Width = unitSize * lang.Value;
+            box.MouseDown += SelectItem;
             languageBar.Children.Add(box);
+
+            langItems.Add(new KeyValuePair<StackPanel, Rectangle>(textStack, box));
+        }
+    }
+
+    private const float UNSELECTED_OPACITY = 0.64f;
+
+    private void SelectItem(object sender, MouseButtonEventArgs e)
+    {
+        foreach (var item in langItems)
+        {
+            bool selected = item.Value == sender || item.Key == sender;
+
+            item.Value.Fill.Opacity = selected ? 1 : UNSELECTED_OPACITY;
+            item.Key.Opacity = selected ? 1 : UNSELECTED_OPACITY;
         }
     }
 }
