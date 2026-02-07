@@ -153,6 +153,7 @@ public partial class MainWindow : Window
             }
 
             var color = (Color)ColorConverter.ConvertFromString("#" + hexColor);
+            var colorBrush = new SolidColorBrush(hexColor == "000000" ? Colors.Transparent : color);
 
             var textStack = new StackPanel();
             textStack.Orientation = Orientation.Horizontal;
@@ -160,7 +161,7 @@ public partial class MainWindow : Window
             languageList.Children.Add(textStack);
 
             var circle = new Ellipse();
-            circle.Fill = new SolidColorBrush(hexColor == "000000" ? Colors.Transparent : color);
+            circle.Fill = colorBrush;
             circle.Width = 12;
             circle.Height = 12;
             circle.Margin = new Thickness(2);
@@ -171,7 +172,7 @@ public partial class MainWindow : Window
             textStack.Children.Add(text);
 
             var box = new Rectangle();
-            box.Fill = new SolidColorBrush(color);
+            box.Fill = colorBrush;
             box.Width = unitSize * lang.Value;
             box.MouseDown += SelectItem;
             languageBar.Children.Add(box);
