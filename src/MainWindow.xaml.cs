@@ -15,8 +15,7 @@ namespace GitHubLanguageStats;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private List<KeyValuePair<string, ulong>> languages =
-        new List<KeyValuePair<string, ulong>>();
+    private List<RepoInfo> repositories = new List<RepoInfo>();
 
     private List<KeyValuePair<StackPanel, Rectangle>> langItems =
         new List<KeyValuePair<StackPanel, Rectangle>>();
@@ -42,10 +41,19 @@ public partial class MainWindow : Window
         var obj = JObject.Parse(json);
         var array = obj.Value<JArray>("items");
 
-        languages.Clear();
+        repositories.Clear();
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            repoFilter.Items.Clear();
+            repoFilter.Items.Add("All");
+            repoFilter.SelectedIndex = 0;
+        });
 
         foreach (var item in array)
         {
+            var repo = new RepoInfo(item.Value<string>("name"));
+
             var languageURL = item.Value<string>("languages_url");
             var langJson = await GitHubGetRequest(languageURL);
             var langs = JObject.Parse(langJson);
@@ -54,20 +62,22 @@ public partial class MainWindow : Window
             {
                 var value = language.Value.ToObject<ulong>();
 
-                var keySearch = languages.Where(x => x.Key == language.Key);
+                var keySearch = repo.Languages.Where(x => x.Key == language.Key);
 
                 if (keySearch.Count() > 0)
                 {
                     var i = keySearch.First();
-                    var index = languages.IndexOf(i);
+                    var index = repo.Languages.IndexOf(i);
 
-                    languages[index] = new KeyValuePair<string, ulong>(i.Key, i.Value + value);
+                    repo.Languages[index] = new KeyValuePair<string, ulong>(i.Key, i.Value + value);
                 }
-                else
-                {
-                    languages.Add(new KeyValuePair<string, ulong>(language.Key, value));
-                }
+                else repo.Add(language.Key, value);
             }
+
+            repositories.Add(repo);
+
+            Application.Current.Dispatcher.Invoke(() =>
+            { repoFilter.Items.Add(repo.Name); });
 
             Application.Current.Dispatcher.Invoke(UpdateLanguageInfo);
         }
@@ -94,7 +104,16 @@ public partial class MainWindow : Window
     {
         ulong total = 0;
 
-        foreach (var lang in languages)
+        var repo = new RepoInfo();
+        var index = repoFilter.SelectedIndex - 1;
+
+        if (index < 0)
+            foreach (var i in repositories)
+                repo.Join(i);
+        else
+                repo = repositories[index];
+
+        foreach (var lang in repo.Languages)
             total += lang.Value;
 
         var unitSize = ActualWidth / total;
@@ -103,9 +122,7 @@ public partial class MainWindow : Window
         languageBar.Children.Clear();
         languageList.Children.Clear();
 
-        languages = languages.OrderByDescending(x => x.Value).ToList();
-
-        foreach (var lang in languages)
+        foreach (var lang in repo.Languages)
         {
             var percentage = (100d / total) * lang.Value;
             percentage = Math.Round(percentage * 100) / 100;
@@ -174,5 +191,11 @@ public partial class MainWindow : Window
             item.Value.Fill.Opacity = selected ? 1 : UNSELECTED_OPACITY;
             item.Key.Opacity = selected ? 1 : UNSELECTED_OPACITY;
         }
+    }
+
+    private void RepoFilterUpdated(object sender, SelectionChangedEventArgs e)
+    {
+        if (repositories.Count > 0)
+            UpdateLanguageInfo();
     }
 }

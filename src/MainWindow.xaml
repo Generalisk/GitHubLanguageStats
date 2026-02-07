@@ -8,6 +8,9 @@
         Title="GitHub Language Stats" Height="450" Width="800">
     <Grid>
         <DockPanel>
+            <ComboBox x:Name="repoFilter" SelectionChanged="RepoFilterUpdated" SelectedIndex="0" DockPanel.Dock="Top">
+                <ComboBoxItem>All</ComboBoxItem>
+            </ComboBox>
             <StackPanel x:Name="languageBar" Orientation="Horizontal" Height="20" DockPanel.Dock="Top">
             </StackPanel>
             <WrapPanel x:Name="languageList" Orientation="Horizontal">
