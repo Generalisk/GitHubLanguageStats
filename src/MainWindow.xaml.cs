@@ -37,11 +37,12 @@ public partial class MainWindow : Window
 
     public async void Refresh()
     {
+        Application.Current.Dispatcher.Invoke(() =>
+        { refreshButton.IsEnabled = false; });
+
         var json = await GitHubGetRequest(REQUEST_URL);
         var obj = JObject.Parse(json);
         var array = obj.Value<JArray>("items");
-
-        repositories.Clear();
 
         Application.Current.Dispatcher.Invoke(() =>
         {
@@ -49,6 +50,8 @@ public partial class MainWindow : Window
             repoFilter.Items.Add("All");
             repoFilter.SelectedIndex = 0;
         });
+
+        repositories.Clear();
 
         foreach (var item in array)
         {
@@ -81,6 +84,9 @@ public partial class MainWindow : Window
 
             Application.Current.Dispatcher.Invoke(UpdateLanguageInfo);
         }
+
+        Application.Current.Dispatcher.Invoke(() =>
+        { refreshButton.IsEnabled = true; });
     }
 
     public string REQUEST_URL { get => string.Format("https://api.github.com/search/repositories?q=user:{0}", AUTHOR); }
@@ -194,9 +200,12 @@ public partial class MainWindow : Window
         }
     }
 
-    private void RepoFilterUpdated(object sender, SelectionChangedEventArgs e)
+    private void RepoFilter_Updated(object sender, SelectionChangedEventArgs e)
     {
         if (repositories.Count > 0)
             UpdateLanguageInfo();
     }
+
+    private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        => Refresh();
 }
