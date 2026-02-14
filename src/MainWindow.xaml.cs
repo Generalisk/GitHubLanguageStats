@@ -47,8 +47,6 @@ public partial class MainWindow : Window
         Application.Current.Dispatcher.Invoke(() =>
         {
             repoFilter.Items.Clear();
-            repoFilter.Items.Add("All");
-            repoFilter.SelectedIndex = 0;
         });
 
         repositories.Clear();
@@ -80,7 +78,10 @@ public partial class MainWindow : Window
             repositories.Add(repo);
 
             Application.Current.Dispatcher.Invoke(() =>
-            { repoFilter.Items.Add(repo.Name); });
+            {
+                repoFilter.Items.Add(repo.Name);
+                repoFilter.SelectedItems.Add(repo.Name);
+            });
 
             Application.Current.Dispatcher.Invoke(UpdateLanguageInfo);
         }
@@ -111,13 +112,11 @@ public partial class MainWindow : Window
         ulong total = 0;
 
         var repo = new RepoInfo();
-        var index = repoFilter.SelectedIndex - 1;
+        var items = repoFilter.SelectedItems.Cast<string>();
+        var indexes = items.Select(x => repoFilter.Items.IndexOf(x));
 
-        if (index < 0)
-            foreach (var i in repositories)
-                repo.Join(i);
-        else
-                repo = repositories[index];
+        foreach (var index in indexes)
+            repo.Join(repositories[index]);
 
         foreach (var lang in repo.Languages)
             total += lang.Value;
