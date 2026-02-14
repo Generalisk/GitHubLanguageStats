@@ -83,7 +83,7 @@ public partial class MainWindow : Window
                 repoFilter.SelectedItems.Add(repo.Name);
             });
 
-            Application.Current.Dispatcher.Invoke(UpdateLanguageInfo);
+            //Application.Current.Dispatcher.Invoke(UpdateLanguageInfo);
         }
 
         Application.Current.Dispatcher.Invoke(() =>
@@ -201,6 +201,9 @@ public partial class MainWindow : Window
 
     private void RepoFilter_Updated(object sender, SelectionChangedEventArgs e)
     {
+        var selected = repoFilter.SelectedItems.Cast<string>();
+        repoFilterDropdownBtn.Content = string.Join(", ", selected);
+
         if (repositories.Count > 0)
             UpdateLanguageInfo();
     }
