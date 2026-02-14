@@ -10,7 +10,10 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
                 <Button x:Name="refreshButton" Content="Refresh" Click="RefreshButton_Click" DockPanel.Dock="Right" />
-                <ListBox x:Name="repoFilter" SelectionMode="Multiple" SelectionChanged="RepoFilter_Updated" />
+                <Popup x:Name="repoFilterDropdown" Placement="Bottom" StaysOpen="False">
+                    <ListBox x:Name="repoFilter" SelectionMode="Multiple" SelectionChanged="RepoFilter_Updated" />
+                </Popup>
+                <Button x:Name="repoFilterDropdownBtn" Content="Repositories" HorizontalContentAlignment="Left" Click="RepoFilterDropdown_Click" />
             </DockPanel>
             <StackPanel x:Name="languageBar" Orientation="Horizontal" Height="20" DockPanel.Dock="Top">
             </StackPanel>

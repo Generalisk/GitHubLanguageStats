@@ -207,4 +207,7 @@ public partial class MainWindow : Window
 
     private void RefreshButton_Click(object sender, RoutedEventArgs e)
         => Refresh();
+
+    private void RepoFilterDropdown_Click(object sender, RoutedEventArgs e)
+        => repoFilterDropdown.IsOpen = !repoFilterDropdown.IsOpen;
 }
