@@ -20,6 +20,8 @@ public partial class MainWindow : Window
     private List<KeyValuePair<StackPanel, Rectangle>> langItems =
         new List<KeyValuePair<StackPanel, Rectangle>>();
 
+    private int selected = -1;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -190,9 +192,22 @@ public partial class MainWindow : Window
 
     private void SelectItem(object sender, MouseButtonEventArgs e)
     {
-        foreach (var item in langItems)
+        var search = langItems.Where(x => x.Key == sender || x.Value == sender);
+
+        if (search.Any())
         {
-            bool selected = item.Value == sender || item.Key == sender;
+            var index = langItems.IndexOf(search.First());
+
+            if (selected == index)
+                selected = -1;
+            else selected = index;
+        }
+
+        for (int i = 0; i < langItems.Count; i++)
+        {
+            var item = langItems[i];
+
+            bool selected = this.selected == i || this.selected < 0;
 
             item.Value.Fill.Opacity = selected ? 1 : UNSELECTED_OPACITY;
             item.Key.Opacity = selected ? 1 : UNSELECTED_OPACITY;
