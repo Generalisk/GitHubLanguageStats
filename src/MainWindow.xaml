@@ -15,10 +15,8 @@
                 </Popup>
                 <Button x:Name="repoFilterDropdownBtn" Content="Repositories" HorizontalContentAlignment="Left" Click="RepoFilterDropdown_Click" />
             </DockPanel>
-            <StackPanel x:Name="languageBar" Orientation="Horizontal" Height="20" DockPanel.Dock="Top">
-            </StackPanel>
-            <WrapPanel x:Name="languageList" Orientation="Horizontal">
-            </WrapPanel>
+            <StackPanel x:Name="languageBar" Orientation="Horizontal" Height="20" DockPanel.Dock="Top" />
+            <WrapPanel x:Name="languageList" Orientation="Horizontal" />
         </DockPanel>
     </Grid>
 </Window>
