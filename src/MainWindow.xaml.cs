@@ -192,7 +192,13 @@ public partial class MainWindow : Window
     private void RepoFilter_Updated(object sender, SelectionChangedEventArgs e)
     {
         var selected = repoFilter.SelectedItems.Cast<string>();
-        repoFilterDropdownBtn.Content = string.Join(", ", selected);
+
+        if (selected.Count() <= 0)
+            repoFilterDropdownBtn.Content = "None";
+        else if (selected.Count() == repoFilter.Items.Count)
+            repoFilterDropdownBtn.Content = "All";
+        else
+            repoFilterDropdownBtn.Content = string.Join(", ", selected);
 
         if (repositories.Count > 0)
             UpdateLanguageInfo();
