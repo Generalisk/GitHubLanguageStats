@@ -134,33 +134,8 @@ public partial class MainWindow : Window
             var percentage = (100d / total) * lang.Value;
             percentage = Math.Round(percentage * 100) / 100;
 
-            string hexColor;
-            switch (lang.Key)
-            {
-                case "C": hexColor = "555555"; break;
-                case "C++": hexColor = "F34B7D"; break;
-                case "C#": hexColor = "178600"; break;
-                case "F#": hexColor = "B845FC"; break;
-                case "VisualBasic": hexColor = "945DB7"; break;
-                case "JavaScript": hexColor = "F1E05A"; break;
-                case "Python": hexColor = "3572A5"; break;
-                case "Lua": hexColor = "000080"; break;
-                case "Rust": hexColor = "DEA584"; break;
-                case "Ruby": hexColor = "701516"; break;
-                case "Squirrel": hexColor = "800000"; break;
-                case "Haxe": hexColor = "DF7900"; break;
-                case "Go": hexColor = "00ADD8"; break;
-                case "Vue": hexColor = "2C3E50"; break;
-                case "TypeScript": hexColor = "3178C6"; break;
-                case "Assembly": hexColor = "6E4C13"; break;
-                case "HTML": hexColor = "E34C26"; break;
-                case "CSS": hexColor = "663399"; break;
-                case "PHP": hexColor = "4F5D95"; break;
-                default: hexColor = "000000"; break;
-            }
-
-            var color = (Color)ColorConverter.ConvertFromString("#" + hexColor);
-            var colorBrush = new SolidColorBrush(hexColor == "000000" ? Colors.Transparent : color);
+            var color = LanguageColors.GetColorByName(lang.Key);
+            var colorBrush = new SolidColorBrush(color == LanguageColors.Invalid ? Colors.Transparent : color);
 
             var textStack = new StackPanel();
             textStack.Orientation = Orientation.Horizontal;
